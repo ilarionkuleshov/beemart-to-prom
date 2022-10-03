@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "beemart-to-prom"
+version = "0.1.0"
+description = ""
+authors = ["ilarionkuleshov <ilarion.kuleshov@gmail.com>"]
+readme = "README.md"
+packages = [{include = "beemart_to_prom"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Scrapy = "^2.6.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
