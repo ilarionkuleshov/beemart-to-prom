@@ -9,6 +9,9 @@ packages = [{include = "beemart_to_prom"}]
 [tool.poetry.dependencies]
 python = "^3.8"
 Scrapy = "^2.6.3"
+python-dotenv = "^0.21.0"
+yattag = "^1.14.0"
+XlsxWriter = "^3.0.3"
 
 
 [build-system]
