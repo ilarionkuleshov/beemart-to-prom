@@ -19,9 +19,8 @@ class BeemartSpider(Spider):
         #"https://beemart.pl.ua/hlopchiki/tolstovki-svitshoti_m/",
     ]
 
-    def __init__(self, main_logger, products_file_path):
+    def __init__(self, products_file_path):
         super(BeemartSpider, self).__init__()
-        self.main_logger = main_logger
         self.products_file_path = products_file_path
 
     def parse(self, response):
@@ -90,7 +89,7 @@ class BeemartSpider(Spider):
                             }
                         )
         except Exception as e:
-            self.main_logger.error(e)
+            self.logger.error(e)
 
     def get_variation_id(self, external_id):
         md5 = hashlib.md5()
