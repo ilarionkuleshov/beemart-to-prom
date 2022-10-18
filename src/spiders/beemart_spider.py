@@ -12,11 +12,27 @@ class BeemartSpider(Spider):
         "ITEM_PIPELINES": {"pipelines.XlsxPipeline": 800}
     }
     start_urls = [
+        "https://beemart.pl.ua/divchatka/kostyumy-komplekty_d/",
+        "https://beemart.pl.ua/divchatka/platya-yubki_d/",
+        "https://beemart.pl.ua/divchatka/futbolki-bluzy_d/",
+        "https://beemart.pl.ua/divchatka/bryuki-losiny_d/",
+        "https://beemart.pl.ua/divchatka/dlya-doma_d/",
+        "https://beemart.pl.ua/divchatka/tolstovki-svitshoti_d/",
         "https://beemart.pl.ua/hlopchiki/kostyumy-komplekty_m/",
-        #"https://beemart.pl.ua/hlopchiki/futbolki-dzhempera_m/",
-        #"https://beemart.pl.ua/hlopchiki/bryuki-shorty_m/",
-        #"https://beemart.pl.ua/hlopchiki/dlya-doma_m/",
-        #"https://beemart.pl.ua/hlopchiki/tolstovki-svitshoti_m/",
+        "https://beemart.pl.ua/hlopchiki/futbolki-dzhempera_m/",
+        "https://beemart.pl.ua/hlopchiki/bryuki-shorty_m/",
+        "https://beemart.pl.ua/hlopchiki/dlya-doma_m/",
+        "https://beemart.pl.ua/hlopchiki/tolstovki-svitshoti_m/",
+        "https://beemart.pl.ua/zhinki/kostyumi-komplekti_z/",
+        "https://beemart.pl.ua/zhinki/plattya-spidnici_z/",
+        "https://beemart.pl.ua/zhinki/futbolki-bluzy_z/",
+        "https://beemart.pl.ua/zhinki/shtani-shorti_z/",
+        "https://beemart.pl.ua/zhinki/dlya-domu_z/",
+        "https://beemart.pl.ua/zhinki/bomberi_z/",
+        "https://beemart.pl.ua/choloviki/futbolki-dzhempera_ch/",
+        "https://beemart.pl.ua/choloviki/sportivnij-odyag_ch/",
+        "https://beemart.pl.ua/choloviki/dlya-domu_ch/",
+        "https://beemart.pl.ua/choloviki/nizhnya-bilizna_ch/",
     ]
 
     def __init__(self, products_file_path):
