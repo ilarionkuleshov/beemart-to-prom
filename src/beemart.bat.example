@@ -1,0 +1,2 @@
+cd BEEMART_SRC_DIRECTORY_ABSOLUTE_PATH
+.venv\Scripts\python main.py
