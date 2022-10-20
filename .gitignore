@@ -2,6 +2,7 @@ __pycache__/
 
 .env
 src/.venv/
+src/beemart.bat
 
 src/data/*
 !src/data/.gitkeep
