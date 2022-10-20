@@ -34,6 +34,7 @@ class BeemartSpider(Spider):
         "https://beemart.pl.ua/choloviki/dlya-domu_ch/",
         "https://beemart.pl.ua/choloviki/nizhnya-bilizna_ch/",
     ]
+    unique_ids = []
 
     def __init__(self, products_file_path):
         super(BeemartSpider, self).__init__()
@@ -89,21 +90,23 @@ class BeemartSpider(Spider):
                         else:
                             images = base_image
                         unique_id = f"{external_id}{color}{size}"
-                        yield ProductItem(
-                            {
-                                "title": title,
-                                "external_id": external_id,
-                                "unique_id": unique_id,
-                                "variation_id": variation_id,
-                                "availability": availability,
-                                "description": description,
-                                "price": price,
-                                "images": images,
-                                "size": size,
-                                "color": color,
-                                "base_characteristics": base_characteristics
-                            }
-                        )
+                        if not unique_id in self.unique_ids:
+                            self.unique_ids.append(unique_id)
+                            yield ProductItem(
+                                {
+                                    "title": title,
+                                    "external_id": external_id,
+                                    "unique_id": unique_id,
+                                    "variation_id": variation_id,
+                                    "availability": availability,
+                                    "description": description,
+                                    "price": price,
+                                    "images": images,
+                                    "size": size,
+                                    "color": color,
+                                    "base_characteristics": base_characteristics
+                                }
+                            )
         except Exception as e:
             self.logger.error(e)
 

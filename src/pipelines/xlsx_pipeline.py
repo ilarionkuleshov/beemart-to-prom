@@ -14,7 +14,7 @@ class XlsxPipeline:
     def write_header_row(self):
         self.header_row = [
             "Назва_позиції", "Код_товару", "Ідентифікатор_товару", "ID_групи_різновидів", "Наявність",
-            "Опис", "Ціна", "Валюта", "Одиниця_виміру", "Посилання_зображення"
+            "Опис", "Ціна", "Валюта", "Одиниця_виміру", "Тип_товару", "Посилання_зображення"
         ]
         for value in self.header_row:
             self.write(value)
@@ -30,6 +30,7 @@ class XlsxPipeline:
         self.write(item["price"])
         self.write("грн")
         self.write("шт.")
+        self.write("r")
         self.write(item["images"])
         self.write_characteristic("Розмір", item["size"])
         self.write_characteristic("Колір", item["color"])
