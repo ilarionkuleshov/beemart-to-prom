@@ -11,7 +11,7 @@ class BeemartSpider(Spider):
     custom_settings = {
         "ITEM_PIPELINES": {"pipelines.XlsxPipeline": 800}
     }
-    start_urls = [
+    serp_urls = [
         "https://beemart.pl.ua/divchatka/kostyumy-komplekty_d/",
         "https://beemart.pl.ua/divchatka/platya-yubki_d/",
         "https://beemart.pl.ua/divchatka/futbolki-bluzy_d/",
@@ -40,17 +40,27 @@ class BeemartSpider(Spider):
         super(BeemartSpider, self).__init__()
         self.products_file_path = products_file_path
 
-    def parse(self, response):
+    def start_requests(self):
+        for url in self.serp_urls:
+            yield Request(
+                url=url,
+                callback=self.parse_serp,
+                cookies={"language": "ru"}
+            )
+
+    def parse_serp(self, response):
         for product_url in response.xpath("//div[@class='product-grid']//div[@class='name']/a/@href").getall():
             yield Request(
                 url=product_url,
-                callback=self.parse_product
+                callback=self.parse_product,
+                cookies={"language": "ru"}
             )
         next_page_url = response.xpath("//a[text()='>']/@href").get()
         if next_page_url:
             yield Request(
                 url=next_page_url,
-                callback=self.parse
+                callback=self.parse_serp,
+                cookies={"language": "ru"}
             )
 
     def parse_product(self, response):
