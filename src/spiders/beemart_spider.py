@@ -35,10 +35,12 @@ class BeemartSpider(Spider):
         "https://beemart.pl.ua/choloviki/nizhnya-bilizna_ch/",
     ]
     unique_ids = []
+    products_counter = 0
 
-    def __init__(self, products_file_path):
+    def __init__(self, products_file_path, products_limit):
         super(BeemartSpider, self).__init__()
         self.products_file_path = products_file_path
+        self.products_limit = products_limit
 
     def start_requests(self):
         for url in self.serp_urls:
@@ -50,11 +52,13 @@ class BeemartSpider(Spider):
 
     def parse_serp(self, response):
         for product_url in response.xpath("//div[@class='product-grid']//div[@class='name']/a/@href").getall():
-            yield Request(
-                url=product_url,
-                callback=self.parse_product,
-                cookies={"language": "ru"}
-            )
+            if self.products_limit is None or self.products_counter < int(self.products_limit):
+                self.products_counter += 1
+                yield Request(
+                    url=product_url,
+                    callback=self.parse_product,
+                    cookies={"language": "ru"}
+                )
         next_page_url = response.xpath("//a[text()='>']/@href").get()
         if next_page_url:
             yield Request(
