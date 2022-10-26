@@ -32,10 +32,10 @@ class XlsxPipeline:
         self.write("шт.")
         self.write("r")
         self.write(item["images"])
-        self.write_characteristic("Розмір", item["size"])
-        self.write_characteristic("Колір", item["color"])
+        self.write_characteristic("Размер", item["size"])
+        self.write_characteristic("Расцветка", item["color"])
         for name in item["base_characteristics"]:
-            if name != "Розмір" and name != "Колір":
+            if name != "Размер" and name != "Расцветка":
                 self.write_characteristic(name, item["base_characteristics"][name])
         self.write(last=True)
         return item

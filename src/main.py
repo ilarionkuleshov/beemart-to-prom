@@ -13,6 +13,7 @@ if __name__ == "__main__":
         project_settings.get("PRODUCTS_FILE"),
         project_settings.get("LOGS_FILE"),
     )
+    products_limit = int(project_settings.get("PRODUCTS_LIMIT")) if project_settings.get("PRODUCTS_LIMIT") else None
 
     process = CrawlerProcess(
         settings={
@@ -20,6 +21,6 @@ if __name__ == "__main__":
             "LOG_FILE": logs_file_path
         }
     )
-    process.crawl(BeemartSpider, products_file_path)
+    process.crawl(BeemartSpider, products_file_path, products_limit)
     process.start()
     import_to_prom(project_settings.get("API_TOKEN"), products_file_path)

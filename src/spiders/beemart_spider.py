@@ -11,7 +11,7 @@ class BeemartSpider(Spider):
     custom_settings = {
         "ITEM_PIPELINES": {"pipelines.XlsxPipeline": 800}
     }
-    start_urls = [
+    serp_urls = [
         "https://beemart.pl.ua/divchatka/kostyumy-komplekty_d/",
         "https://beemart.pl.ua/divchatka/platya-yubki_d/",
         "https://beemart.pl.ua/divchatka/futbolki-bluzy_d/",
@@ -35,22 +35,36 @@ class BeemartSpider(Spider):
         "https://beemart.pl.ua/choloviki/nizhnya-bilizna_ch/",
     ]
     unique_ids = []
+    products_counter = 0
 
-    def __init__(self, products_file_path):
+    def __init__(self, products_file_path, products_limit):
         super(BeemartSpider, self).__init__()
         self.products_file_path = products_file_path
+        self.products_limit = products_limit
 
-    def parse(self, response):
-        for product_url in response.xpath("//div[@class='product-grid']//div[@class='name']/a/@href").getall():
+    def start_requests(self):
+        for url in self.serp_urls:
             yield Request(
-                url=product_url,
-                callback=self.parse_product
+                url=url,
+                callback=self.parse_serp,
+                cookies={"language": "ru"}
             )
+
+    def parse_serp(self, response):
+        for product_url in response.xpath("//div[@class='product-grid']//div[@class='name']/a/@href").getall():
+            if self.products_limit is None or self.products_counter < int(self.products_limit):
+                self.products_counter += 1
+                yield Request(
+                    url=product_url,
+                    callback=self.parse_product,
+                    cookies={"language": "ru"}
+                )
         next_page_url = response.xpath("//a[text()='>']/@href").get()
         if next_page_url:
             yield Request(
                 url=next_page_url,
-                callback=self.parse
+                callback=self.parse_serp,
+                cookies={"language": "ru"}
             )
 
     def parse_product(self, response):
