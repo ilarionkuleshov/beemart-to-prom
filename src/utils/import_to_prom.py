@@ -15,7 +15,8 @@ def import_to_prom(api_token, products_file_path):
                     "only_available": False,
                     "mark_missing_product_as": "not_available",
                     "updated_fields": [
-                        "presence"
+                        "presence",
+                        "price"
                     ]
                 }
             )
