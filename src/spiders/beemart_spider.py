@@ -93,7 +93,11 @@ class BeemartSpider(Spider):
             for size_input in response.xpath("//div[@class='prodButtons']/input"):
                 size = response.xpath(f"//label[@for='{size_input.xpath('@id').get()}']/text()").get().strip()
                 price = size_input.xpath("@data-price").get().strip()
-                price = float(price.split(" ")[0]) if price else None
+                if price:
+                    price = float(price.split(" ")[0])
+                else:
+                    continue
+                price = self.get_markup_price(price)
                 if size and price:
                     for color_input in response.xpath(f"//input[not(@disabled) and @data-parent_id={size_input.xpath('@value').get()}]"):
                         color_list = response.xpath(f"//label[@for='{color_input.xpath('@id').get()}']/text()").getall()
@@ -123,6 +127,23 @@ class BeemartSpider(Spider):
                             )
         except Exception as e:
             self.logger.error(e)
+
+    def get_markup_price(self, price):
+        if price < 100:
+            markup = 0.5
+        elif price >= 100 and price < 200:
+            markup = 0.4
+        elif price >= 200 and price < 300:
+            markup = 0.35
+        elif price >= 300 and price < 400:
+            markup = 0.3
+        elif price >= 400 and price < 500:
+            markup = 0.25
+        elif price >= 500 and price < 600:
+            markup = 0.2
+        elif price >= 600:
+            markup = 0.15
+        return int((1 + markup) * price)
 
     def get_variation_id(self, external_id):
         md5 = hashlib.md5()
