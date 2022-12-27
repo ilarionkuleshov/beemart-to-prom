@@ -90,11 +90,12 @@ class BeemartSpider(Spider):
                 if len(tds) == 2:
                     base_characteristics[tds[0]] = tds[1]
 
+            discount_k = self.get_discount_k(response)
             for size_input in response.xpath("//div[@class='prodButtons']/input"):
                 size = response.xpath(f"//label[@for='{size_input.xpath('@id').get()}']/text()").get().strip()
                 price = size_input.xpath("@data-price").get().strip()
                 if price:
-                    price = float(price.split(" ")[0])
+                    price = discount_k * float(price.split(" ")[0])
                 else:
                     continue
                 price = self.get_markup_price(price)
@@ -183,3 +184,17 @@ class BeemartSpider(Spider):
                                     with tag("td", align="center"):
                                         text(value)
             return doc.getvalue()
+
+    @staticmethod
+    def get_discount_k(response):
+        old_price = response.xpath("//span[@class='price-old']/@price").get()
+        new_price = response.xpath("//meta[@itemprop='price']/@content").get()
+        if old_price and new_price:
+            try:
+                old_price = float(old_price)
+                new_price = float(new_price)
+                if 1 - (new_price / old_price) > 0:
+                    return old_price / new_price
+            except:
+                pass
+        return 1
